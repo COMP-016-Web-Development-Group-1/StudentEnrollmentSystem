@@ -52,8 +52,8 @@
 
     - `feat` → New feature
     - `fix` → Bug fix
-    - `refactor` → Code refactor (no feature or bug)
-    - `chore` → config and/or dependencies updates
+    - `refactor` → Code changes that neither fix bugs nor add features
+    - `chore` → Maintenance tasks like updating dependencies or configs
     - `docs` → Documentation changes
 
 3. Confirm your current branch:
@@ -93,5 +93,5 @@
     - Add a PR title and description of what you did
 
 7. **Notify the team**
-   
-   Let the team know in the Messenger Group Chat once your PR is ready or if you need help.
+
+    Let the team know in the Messenger Group Chat once your PR is ready or if you need help.

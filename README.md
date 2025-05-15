@@ -65,7 +65,7 @@
 4. Work on your task. Stage and commit changes using this format:
 
     ```bash
-    git add .
+    git add -A
     git commit -m "<type>: <short-description>"
     ```
 
@@ -90,7 +90,8 @@
         - **Base:** `main`
         - **Compare:** your branch (e.g., `feat/login-form`)
 
-    - Add a PR title and detailed description of what you did
+    - Add a PR title and description of what you did
 
 7. **Notify the team**
+   
    Let the team know in the Messenger Group Chat once your PR is ready or if you need help.

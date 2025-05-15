@@ -1,0 +1,15 @@
+{
+    "[php]": {
+        "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.tabSize": 4,
+
+    "files.autoSave": "afterDelay",
+
+    "git.autofetch": true,
+
+    // Preference Settings
+    "php.inlayHints.parameters.enabled": false // true or false
+}

@@ -53,7 +53,7 @@
     - `feat` → New feature
     - `fix` → Bug fix
     - `refactor` → Code refactor (no feature or bug)
-    - `chore` → Routine tasks (e.g., updates)
+    - `chore` → config and/or dependencies updates
     - `docs` → Documentation changes
 
 3. Confirm your current branch:

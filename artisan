@@ -1,0 +1,213 @@
+#!/usr/bin/env php
+<?php
+
+// Usage: php artisan [command] [options]
+
+// Available commands:
+// - list: Show all available commands
+// - migrate: Run database migrations
+// - seed: Seed the database with sample data
+// - fresh: Drop all tables and re-run migrations (use --seed to also seed the database)
+// - clear: Drop all tables
+
+
+if (!file_exists('src/functions.php')) {
+    echo "❌ Error: functions.php file not found.\n";
+    exit(1);
+}
+
+require_once 'src/functions.php';
+
+if (!file_exists(base_path('src/db.php'))) {
+    echo "❌ Error: db.php file not found.\n";
+    exit(1);
+}
+
+require_once base_path('src/db.php');
+
+// Parse command line arguments
+$command = $argv[1] ?? 'list';
+
+// Check for additional arguments/options
+$options = [];
+for ($i = 2; $i < $argc; $i++) {
+    if (strpos($argv[$i], '--') === 0) {
+        $option = substr($argv[$i], 2);
+        $options[$option] = true;
+    }
+}
+
+try {
+    $pdo = createPdo();
+} catch (Exception $e) {
+    echo "❌ Error: " . $e->getMessage() . "\n";
+    exit(1);
+}
+
+
+
+// Show all available commands
+function listCommands()
+{
+    echo "\n Available commands:\n";
+    echo " ======================================================\n";
+    echo " list     - Show all available commands\n";
+    echo " migrate  - Run database migrations\n";
+    echo " seed     - Seed the database with sample data\n";
+    echo " fresh    - Drop all tables and re-run migrations\n";
+    echo "                options: --seed (also seed the database)\n";
+    echo " clear    - Drop all tables\n";
+    echo "\n";
+}
+
+// Run database migrations
+function migrate($pdo)
+{
+    echo "Running migrations...\n";
+
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS courses (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                course_name VARCHAR(255) NOT NULL
+            );
+        ");
+
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS students (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                course_id INT,
+
+                FOREIGN KEY (course_id) REFERENCES courses(id)
+            );
+        ");
+
+
+
+        echo "✅ Migration completed successfully.\n";
+        return true;
+    } catch (PDOException $e) {
+        echo "❌ Migration failed: " . $e->getMessage() . "\n";
+        return false;
+    }
+}
+
+// Seed the database with sample data
+function seed($pdo)
+{
+    echo "Seeding database...\n";
+
+    try {
+        // Check if tables exist
+        $requiredTables = ['students', 'courses'];
+        foreach ($requiredTables as $table) {
+            $check = $pdo->query("SHOW TABLES LIKE '$table'");
+            if ($check->rowCount() === 0) {
+                echo "⚠️ Error: The '$table' table doesn't exist. Run migration first.\n";
+                return false;
+            }
+        }
+
+        // Seed course data
+        $courses = ['Mathematics', 'Computer Science', 'Physics'];
+        $stmt = $pdo->prepare("INSERT INTO courses (course_name) VALUES (?)");
+        foreach ($courses as $course) {
+            $stmt->execute([$course]);
+        }
+
+        // Get course IDs manually
+        $courseRows = $pdo->query("SELECT id, course_name FROM courses")->fetchAll(PDO::FETCH_ASSOC);
+        $courseMap = [];
+        foreach ($courseRows as $row) {
+            $courseMap[$row['course_name']] = $row['id'];
+        }
+
+        // Seed student data
+        $students = [
+            ['Alice', 'alice@example.com', $courseMap['Mathematics']],
+            ['Bob', 'bob@example.com', $courseMap['Computer Science']],
+            ['Charlie', 'charlie@example.com', $courseMap['Mathematics']],
+            ['Dana', 'dana@example.com', null], // no course assigned
+            ['Eve', 'eve@example.com', $courseMap['Physics']],
+        ];
+
+        $stmt = $pdo->prepare("INSERT INTO students (name, email, course_id) VALUES (?, ?, ?)");
+        foreach ($students as $student) {
+            $stmt->execute($student);
+        }
+
+        echo "✅ Database seeded successfully with sample students and courses.\n";
+        return true;
+    } catch (PDOException $e) {
+        echo "❌ Seeding failed: " . $e->getMessage() . "\n";
+        return false;
+    }
+}
+
+
+
+// Drop all tables
+function clear($pdo)
+{
+    echo "Clearing database...\n";
+
+    try {
+        $pdo->exec("DROP TABLE IF EXISTS students");
+        $pdo->exec("DROP TABLE IF EXISTS courses");
+
+        echo "✅ Database cleared successfully.\n";
+        return true;
+    } catch (PDOException $e) {
+        echo "❌ Database clearing failed: " . $e->getMessage() . "\n";
+        return false;
+    }
+}
+
+
+// Drop all tables and re-run migrations (with optional seeding)
+function fresh($pdo, $options = [])
+{
+    echo "🔃 Refreshing database from scratch...\n";
+
+    if (clear($pdo)) {
+        if (migrate($pdo)) {
+            // If --seed option is provided, also seed the database
+            if (isset($options['seed']) && $options['seed']) {
+                return seed($pdo);
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+switch ($command) {
+    case 'list':
+        listCommands();
+        break;
+
+    case 'migrate':
+        migrate($pdo);
+        break;
+
+    case 'seed':
+        seed($pdo);
+        break;
+
+    case 'clear':
+        clear($pdo);
+        break;
+
+    case 'fresh':
+        fresh($pdo, $options);
+        break;
+
+    default:
+        echo "Unknown command: $command\n";
+        listCommands();
+        break;
+}

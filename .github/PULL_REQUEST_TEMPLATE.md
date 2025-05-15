@@ -5,7 +5,6 @@ _What does this PR do?_
 ## Checklist
 
 -   [ ] I have performed a self-review of my code
--   [ ] I’ve added tests (if applicable)
 
 ## Related Issues
 

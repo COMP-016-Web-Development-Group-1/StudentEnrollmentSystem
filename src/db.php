@@ -4,12 +4,10 @@ require_once 'functions.php';
 
 function createPdo()
 {
-    $config = require base_path('config.php');
-
-    $host = $config['db_host'];
-    $dbname = $config['db_name'];
-    $username = $config['db_username'];
-    $password = $config['db_password'];
+    $host = config('db_host');
+    $dbname = config('db_name');
+    $username = config('db_username');
+    $password = config('db_password');
     $charset = 'utf8mb4';
 
     $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";

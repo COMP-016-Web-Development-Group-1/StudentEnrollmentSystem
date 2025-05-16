@@ -28,6 +28,25 @@
 
 5. Open `config.php` and update any necessary environment credentials
 
+6. **Run the project locally using either:**
+
+   * **PHP's built-in development server:**
+
+     ```bash
+     php -S localhost:8888 -t public/views
+     ```
+
+     Then open your browser and go to:
+     [http://localhost:8888](http://localhost:8888)
+
+   * **Or XAMPP (if installed):**
+
+     1. Move or copy the project folder into your XAMPP `htdocs` directory (usually `C:\xampp\htdocs` on Windows).
+     2. Open **XAMPP Control Panel** and start **Apache**.
+     3. Access the project by visiting:
+        [http://localhost/StudentEnrollmentSystem/public/views](http://localhost/StudentEnrollmentSystem/public/views)
+
+
 ---
 
 ## 🤝 Contributing

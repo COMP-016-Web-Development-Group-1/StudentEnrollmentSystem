@@ -20,6 +20,14 @@
     cd StudentEnrollmentSystem
     ```
 
+4. Copy the `config.example.php` and rename it to `config.php`:
+
+    ```bash
+    cp config.example.php config.php
+    ```
+
+5. Open `config.php` and update any necessary environment credentials
+
 ---
 
 ## 🤝 Contributing

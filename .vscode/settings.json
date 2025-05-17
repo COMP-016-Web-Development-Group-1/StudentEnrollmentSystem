@@ -11,5 +11,5 @@
     "git.autofetch": true,
 
     // Preference Settings
-    "php.inlayHints.parameters.enabled": false // true or false
+    "php.inlayHints.parameters.enabled": true // true or false
 }

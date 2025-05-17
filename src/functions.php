@@ -14,6 +14,11 @@ function base_path($path = '')
     return __DIR__ . '/../' . $path;
 }
 
+function uri_is($value)
+{
+    return $_SERVER['REQUEST_URI'] === $value;
+}
+
 function config($key = null, $default = null)
 {
     static $config;

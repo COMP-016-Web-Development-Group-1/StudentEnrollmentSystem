@@ -1,3 +1,7 @@
 {
-    "recommendations": ["devsense.phptools-vscode", "EditorConfig.EditorConfig"]
+    "recommendations": [
+        "devsense.phptools-vscode",
+        "EditorConfig.EditorConfig",
+        "bradlc.vscode-tailwindcss"
+    ]
 }

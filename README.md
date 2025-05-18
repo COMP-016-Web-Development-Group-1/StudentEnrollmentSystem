@@ -4,69 +4,69 @@
 
 1. Open your terminal and navigate to the location where you want to store the project:
 
-   ```bash
-   cd <PATH TO PROJECT LOCATION>
-   ```
+    ```bash
+    cd <PATH TO PROJECT LOCATION>
+    ```
 
 2. Clone the repository directly into the current directory:
 
-   ```bash
-   git clone https://github.com/COMP-016-Web-Development-Group-1/StudentEnrollmentSystem.git
-   ```
+    ```bash
+    git clone https://github.com/COMP-016-Web-Development-Group-1/StudentEnrollmentSystem.git
+    ```
 
 3. Navigate into the project folder:
 
-   ```bash
-   cd StudentEnrollmentSystem
-   ```
+    ```bash
+    cd StudentEnrollmentSystem
+    ```
 
 4. Copy the `config.example.php` file and rename it to `config.php`:
 
-   ```bash
-   cp config.example.php config.php
-   ```
+    ```bash
+    cp config.example.php config.php
+    ```
 
 5. Open `config.php` and update any necessary environment credentials (like database settings).
 
 6. Run database setup and seeding:
 
-   ```bash
-   php artisan migrate --seed
-   ```
+    ```bash
+    php artisan migrate --seed
+    ```
 
-   ✅ This will:
+    ✅ This will:
 
-   * Create the necessary database tables (`courses`, `students`)
-   * Seed the database with example courses and student data
+    - Create the necessary database tables (`courses`, `students`)
+    - Seed the database with example courses and student data
 
-   ℹ️ You can also use other custom commands with `php artisan`, such as:
+    ℹ️ You can also use other custom commands with `php artisan`, such as:
 
-   | Command                    | Description                                        |
-   | -------------------------- | -------------------------------------------------- |
-   | `php artisan list`         | Show all available commands                        |
-   | `php artisan migrate`      | Run database migrations                            |
-   | `php artisan seed`         | Seed the database with sample data                 |
-   | `php artisan fresh`        | Drop all tables and re-run migrations              |
-   | `php artisan fresh --seed` | Drop all tables, re-run migrations, then seed data |
-   | `php artisan clear`        | Drop all tables                                    |
+    | Command                    | Description                                        |
+    | -------------------------- | -------------------------------------------------- |
+    | `php artisan list`         | Show all available commands                        |
+    | `php artisan migrate`      | Run database migrations                            |
+    | `php artisan seed`         | Seed the database with sample data                 |
+    | `php artisan fresh`        | Drop all tables and re-run migrations              |
+    | `php artisan fresh --seed` | Drop all tables, re-run migrations, then seed data |
+    | `php artisan clear`        | Drop all tables                                    |
 
 7. **Run the project locally using either:**
 
-   * **PHP's built-in development server:**
+    - **PHP's built-in development server:**
 
-     ```bash
-     php -S localhost:8888 -t public/views
-     ```
+        ```bash
+        php -S localhost:8888 -t public
+        ```
 
-     Then open your browser and go to:
-     [http://localhost:8888/courses.php](http://localhost:8888/courses.php)
+        Then open your browser and go to:
+        [http://localhost:8888/courses.php](http://localhost:8888/courses.php)
 
-   * **Or XAMPP (if installed):**
+    - **Or XAMPP (if installed):**
 
-     1. Move or copy the project folder into your XAMPP `htdocs` directory (usually `C:\xampp\htdocs` on Windows).
-     2. Open **XAMPP Control Panel** and start **Apache**.
-     3. Access the project by visiting:
-        [http://localhost/StudentEnrollmentSystem/public/views/courses.php](http://localhost/StudentEnrollmentSystem/public/views/courses.php)
+        1. Move or copy the project folder into your XAMPP `htdocs` directory (usually `C:\xampp\htdocs` on Windows).
+        2. Open **XAMPP Control Panel** and start **Apache**.
+        3. Access the project by visiting:
+           [http://localhost/StudentEnrollmentSystem/public/courses.php](http://localhost/StudentEnrollmentSystem/public/courses.php)
 
 ---
 

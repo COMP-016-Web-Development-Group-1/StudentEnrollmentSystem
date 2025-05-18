@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../src/functions.php';
+require_once '../src/functions.php';
 require_once base_path('src/db.php');
 
 $db = createPdo();
@@ -33,7 +33,6 @@ $studentData = $stmt->fetchAll();
     <!-- Themes -->
     <style type="text/tailwindcss">
         @theme {
-            --color-clifford: #da373d;
             --color-background: #f8fbfb;
             --color-primary: #5ba6ac;
             --color-secondary: #9acdd1;
@@ -45,18 +44,11 @@ $studentData = $stmt->fetchAll();
 </head>
 
 <body class="bg-background min-h-screen font-manrope">
-    <div class="max-w-screen-2xl mx-auto px-4 py-6 border-secondary">
+    <?php include base_path('public/partials/header.php'); ?>
+    <?php include base_path('public/courses.php'); ?>
+    <div class="max-w-screen-2xl mx-auto border-secondary">
         <h1 class="text-3xl">Students</h1>
-        <?php
-        if (isset($_SESSION['message'])) {
-            if ($_SESSION['message']['type'] == 'success') {
-                echo '<div class="bg-green-500 text-white p-4 rounded-lg mb-4">' . $_SESSION['message']['text'] . '</div>';
-            } else {
-                echo '<div class="bg-red-500 text-white p-4 rounded-lg mb-4">' . $_SESSION['message']['text'] . '</div>';
-            }
-            unset($_SESSION['message']);
-        }
-        ?>
+        <?php include base_path('public/partials/alert.php'); ?>
 
         <a href="add_student.php" class="bg-secondary rounded-sm gap-x-2 inline-flex p-2 items-center">
             <i class="ti ti-plus text-xl"></i>

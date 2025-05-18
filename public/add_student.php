@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../src/functions.php';
+require_once '../src/functions.php';
 require_once base_path('src/db.php');
 
 $db = createPdo();
@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$name, $email]);
 
         $_SESSION['message'] = [
+            'type' => 'success',
             'text' => 'Student added successfully',
-            'type' => 'success'
         ];
         header('Location: students.php');
         exit;
@@ -73,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Themes -->
     <style type="text/tailwindcss">
         @theme {
-            --color-clifford: #da373d;
             --color-background: #f8fbfb;
             --color-primary: #5ba6ac;
             --color-secondary: #9acdd1;
@@ -85,28 +84,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body class="bg-background min-h-screen font-manrope">
+    <?php include base_path('public/partials/header.php'); ?>
     <div class="max-w-screen-2xl mx-auto px-4 py-6 border-secondary">
-        <h1 class="text-3xl">Add Student</h1>
-        <form method="POST" action="add_student.php">
-            <div>
-                <label for="name">Name: <span class="text-red-500">*</span></label>
-                <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
+        <form method="POST" action="add_student.php" class="max-w-lg bg-white p-4 mx-auto">
+            <h1 class="text-xl mb-4 font-bold text-center">Add Student</h1>
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium  mb-1">Name</label>
+                <input type="text" name="name" id="name"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring focus:ring-accent focus:border-accent"
+                    value="<?= htmlspecialchars($name) ?>" required />
                 <?php if (isset($errors['name'])): ?>
-                    <p class="text-red-500"><?= htmlspecialchars($errors['name']) ?></p>
+                    <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['name']) ?></p>
                 <?php endif; ?>
             </div>
 
-            <div>
-                <label for="email">Email: <span class="text-red-500">*</span></label>
-                <input type="email" name="email" id="email" value="<?= htmlspecialchars($email) ?>" required>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium  mb-1">Email</label>
+                <input type="email" name="email" id="email"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring focus:ring-primary focus:border-primary"
+                    value="<?= htmlspecialchars($email) ?>" required />
                 <?php if (isset($errors['email'])): ?>
-                    <p class="text-red-500"><?= htmlspecialchars($errors['email']) ?></p>
+                    <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['email']) ?></p>
                 <?php endif; ?>
             </div>
 
-            <div class="transition duration-300">
-                <button type="submit" class="bg-primary cursor-pointer">Add Student</button>
-                <a href="students.php" class="bg-transparent cursor-pointer hover:underline">Back</a>
+
+            <div class="transition duration-300 flex items-center justify-end gap-x-4">
+                <a href="students.php"
+                    class="bg-transparent cursor-pointer hover:underline focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-primary focus:border-primary rounded">Back</a>
+                <button type="submit"
+                    class="text-white bg-primary cursor-pointer px-2 py-1 rounded focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-primary focus:border-primary">Add
+                    Student</button>
             </div>
         </form>
 </body>

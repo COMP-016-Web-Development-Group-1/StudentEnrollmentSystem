@@ -66,7 +66,7 @@
         1. Move or copy the project folder into your XAMPP `htdocs` directory (usually `C:\xampp\htdocs` on Windows).
         2. Open **XAMPP Control Panel** and start **Apache**.
         3. Access the project by visiting:
-           [http://localhost/StudentEnrollmentSystem/public/views/courses.php](http://localhost/StudentEnrollmentSystem/public/courses.php)
+           [http://localhost/StudentEnrollmentSystem/public/courses.php](http://localhost/StudentEnrollmentSystem/public/courses.php)
 
 ---
 

@@ -1,25 +1,26 @@
-<header class="px-6 py-4 bg-white shadow-sm">
-    <div class="max-w-screen-2xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-x-4">
-            <i class="ti ti-school text-primary text-4xl"></i>
-            <h1 class="text-xl font-bold">College Name</h1>
-        </div>
-        <nav class="space-x-12 hidden sm:flex">
-            <a href="students.php" class="relative font-bold inline-block group rounded focus:outline-none
-                focus:ring-offset-2 focus:ring-2 focus:ring-primary focus:border-primary
+<header class="px-4 py-2 bg-white shadow-sm">
+    <div class="max-w-screen-2xl mx-auto flex items-center gap-x-2">
+        <div class="flex items-center gap-x-12 flex-1">
+            <div class="flex items-center gap-x-2">
+                <img src="assets/images/university_logo.png" class="w-24">
+                <h1 class="text-xl font-bold block sm:hidden">MTU</h1>
+                <h1 class="text-xl font-bold hidden sm:block">Maharlika Technological University</h1>
+            </div>
+            <nav class="space-x-12 hidden sm:flex">
+                <a href="students.php" class="relative font-bold inline-block group rounded
                 <?= uri_is('/students.php') ? 'text-primary' : 'text-black' ?>">
-                <span class="relative z-10">Students</span>
-                <span
-                    class="absolute left-0 bottom-0 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="courses.php" class="relative font-bold inline-block group rounded focus:outline-none
-                focus:ring-offset-2 focus:ring-2 focus:ring-primary focus:border-primary
+                    <span class="relative z-10">Students</span>
+                    <span
+                        class="absolute left-0 bottom-0 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="courses.php" class="relative font-bold inline-block group rounded
                 <?= uri_is('/courses.php') ? 'text-primary' : 'text-black' ?>">
-                <span class="relative z-10">Courses</span>
-                <span
-                    class="absolute left-0 bottom-0 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </a>
-        </nav>
+                    <span class="relative z-10">Courses</span>
+                    <span
+                        class="absolute left-0 bottom-0 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </nav>
+        </div>
         <div class="px-4 hidden items-center gap-x-2 cursor-pointer sm:flex">
             <img src="assets/images/admin_profile.png" class="w-12 h-12" alt="Admin Profile">
             <p class="font-bold">Admin</p>

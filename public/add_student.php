@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body class="bg-background min-h-screen font-manrope">
     <?php include base_path('public/partials/header.php'); ?>
-    <div class="max-w-screen-2xl mx-auto px-4 py-6 border-secondary">
+    <div class="max-w-screen-2xl mx-auto px-4 py-6">
         <form method="POST" action="add_student.php" class="max-w-lg bg-white p-4 mx-auto">
             <h1 class="text-xl mb-4 font-bold text-center">Add Student</h1>
             <div class="mb-4">

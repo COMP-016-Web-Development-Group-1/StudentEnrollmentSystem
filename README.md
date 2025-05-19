@@ -34,6 +34,8 @@
     php artisan migrate --seed
     ```
 
+    ⚠️ Note: if you are using XAMPP, please use `C:\xampp\php\php.exe artisan`
+
     ✅ This will:
 
     - Create the necessary database tables (`courses`, `students`)

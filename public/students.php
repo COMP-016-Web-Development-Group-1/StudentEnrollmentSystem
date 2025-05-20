@@ -112,9 +112,9 @@ $students = $stmt->fetchAll();
                                 <td class="flex items-center gap-x-2">
                                     <a class="bg-green-600 px-2 py-1 text-white rounded hover:bg-green-500 transition"
                                         href="update_student.php?id=<?= $student['id'] ?>">Update</a>
-                                    <a class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition"
-                                        href="delete_student.php?id=<?= $student['id'] ?>"
-                                        onclick="return confirm('Are you sure you want to delete this student?')">Delete</a>
+                                    <a href="#"
+                                        class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition open-delete-modal"
+                                        data-id="<?= $student['id'] ?>">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -124,6 +124,21 @@ $students = $stmt->fetchAll();
         </div>
 
     </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+        style="background-color: rgba(0, 0, 0, 0.5);">
+        <div class="bg-white rounded-lg shadow p-6 w-full max-w-sm">
+            <h2 class="text-lg font-semibold mb-2">Confirm Deletion</h2>
+            <p class="mb-4 text-sm text-gray-600">Are you sure you want to delete this student?</p>
+            <div class="flex justify-end gap-2">
+                <button id="cancelDeleteBtn"
+                    class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">Cancel</button>
+                <a href="#" id="confirmDeleteBtn"
+                    class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script>
@@ -133,6 +148,25 @@ $students = $stmt->fetchAll();
                 sortable: true
             });
         }
+
+        const modal = document.getElementById('delete-confirmation-modal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const deleteLinks = document.querySelectorAll('.open-delete-modal');
+
+        deleteLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const studentId = this.getAttribute('data-id');
+                confirmDeleteBtn.href = `delete_student.php?id=${studentId}`;
+                modal.classList.remove('hidden');
+            });
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            confirmDeleteBtn.href = '#';
+        });
     </script>
 </body>
 

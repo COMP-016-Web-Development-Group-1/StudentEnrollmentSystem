@@ -61,7 +61,6 @@ $courses = $stmt->fetchAll();
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             <?php foreach ($courses as $course): ?>
                 <div class="bg-white rounded-xl shadow hover:shadow-lg transition flex flex-col relative">
-                    <!-- Actions: 3-dots menu -->
                     <div class="absolute top-4 right-4 z-10">
                         <button type="button" id="dropdownMenuIconButton-<?= $course['id'] ?>"
                             data-dropdown-toggle="dropdownDots-<?= $course['id'] ?>"
@@ -73,7 +72,7 @@ $courses = $stmt->fetchAll();
                             <ul class="py-2 text-sm text-gray-700"
                                 aria-labelledby="dropdownMenuIconButton-<?= $course['id'] ?>">
                                 <li>
-                                    <a href="edit_course.php?id=<?= urlencode($course['id']) ?>"
+                                    <a href="update_course.php?id=<?= urlencode($course['id']) ?>"
                                         class="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="ti ti-edit"></i> Update Course
                                     </a>
@@ -89,16 +88,13 @@ $courses = $stmt->fetchAll();
                         </div>
                     </div>
                     <div class="flex-1 p-6 flex flex-col">
-                        <!-- Bold course name -->
                         <h2 class="text-xl font-extrabold text-gray-800 mb-2">
                             <?= htmlspecialchars($course['course_name']) ?>
                         </h2>
                         <?php if (!empty($course['description'])): ?>
                             <p class="text-gray-600 mb-3"><?= htmlspecialchars($course['description']) ?></p>
                         <?php endif; ?>
-                        <!-- Closer, gray, semi-transparent separator line -->
                         <hr class="my-2 border-t border-gray-400 opacity-50">
-                        <!-- Add space between separator and button, center button -->
                         <div class="mt-4 flex justify-center">
                             <a href="course.php?id=<?= urlencode($course['id']) ?>"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-accent transition focus:outline-none focus:ring-2 focus:ring-accent">
@@ -128,9 +124,6 @@ $courses = $stmt->fetchAll();
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script>
-        // Dropdown logic is handled by Flowbite
-
-        // Delete modal logic (reuse from students.php, but for courses)
         const modal = document.getElementById('delete-confirmation-modal');
         const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');

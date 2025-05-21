@@ -134,8 +134,8 @@ $students = $stmt->fetchAll();
                                     <a class="bg-green-600 px-2 py-1 text-white rounded hover:bg-green-500 transition"
                                         href="update_student.php?id=<?= $student['id'] ?>">Update</a>
                                     <a href="#"
-                                        class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition open-delete-modal"
-                                        data-id="<?= $student['id'] ?>">Delete</a>
+                                        class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition open-unenroll-modal"
+                                        data-id="<?= $student['id'] ?>">Unenroll</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -150,17 +150,18 @@ $students = $stmt->fetchAll();
             </div>
         </div>
     </div>
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+    <!-- Unenroll Confirmation Modal -->
+    <div id="unenroll-confirmation-modal" tabindex="-1"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center"
         style="background-color: rgba(0, 0, 0, 0.5);">
         <div class="bg-white rounded-lg shadow p-6 w-full max-w-sm">
-            <h2 class="text-lg font-semibold mb-2">Confirm Deletion</h2>
-            <p class="mb-4 text-sm text-gray-600">Are you sure you want to delete this student?</p>
+            <h2 class="text-lg font-semibold mb-2">Confirm Unenroll</h2>
+            <p class="mb-4 text-sm text-gray-600">Are you sure you want to unenroll this student from the course?</p>
             <div class="flex justify-end gap-2">
-                <button id="cancelDeleteBtn"
+                <button id="cancelUnenrollBtn"
                     class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">Cancel</button>
-                <a href="#" id="confirmDeleteBtn"
-                    class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+                <a href="#" id="confirmUnenrollBtn"
+                    class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Unenroll</a>
             </div>
         </div>
     </div>
@@ -175,23 +176,23 @@ $students = $stmt->fetchAll();
             });
         }
 
-        const modal = document.getElementById('delete-confirmation-modal');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const deleteLinks = document.querySelectorAll('.open-delete-modal');
+        const modal = document.getElementById('unenroll-confirmation-modal');
+        const confirmUnenrollBtn = document.getElementById('confirmUnenrollBtn');
+        const cancelUnenrollBtn = document.getElementById('cancelUnenrollBtn');
+        const unenrollLinks = document.querySelectorAll('.open-unenroll-modal');
 
-        deleteLinks.forEach(link => {
+        unenrollLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
                 const studentId = this.getAttribute('data-id');
-                confirmDeleteBtn.href = `delete_student.php?id=${studentId}`;
+                confirmUnenrollBtn.href = `unenroll_student.php?id=${studentId}&course_id=<?= urlencode($courseId) ?>`;
                 modal.classList.remove('hidden');
             });
         });
 
-        cancelDeleteBtn.addEventListener('click', () => {
+        cancelUnenrollBtn.addEventListener('click', () => {
             modal.classList.add('hidden');
-            confirmDeleteBtn.href = '#';
+            confirmUnenrollBtn.href = '#';
         });
     </script>
 </body>

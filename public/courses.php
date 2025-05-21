@@ -96,7 +96,7 @@ $courses = $stmt->fetchAll();
                         <?php endif; ?>
                         <hr class="my-2 border-t border-gray-400 opacity-50">
                         <div class="mt-4 flex justify-center">
-                            <a href="course.php?id=<?= urlencode($course['id']) ?>"
+                            <a href="view_course.php?id=<?= urlencode($course['id']) ?>"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-accent transition focus:outline-none focus:ring-2 focus:ring-accent">
                                 <i class="ti ti-eye"></i> View Course
                             </a>

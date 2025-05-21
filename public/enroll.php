@@ -23,9 +23,21 @@ if (!$course) {
 }
 
 // Get students who are NOT yet enrolled in this course
-$studentsStmt = $db->prepare("SELECT * FROM students WHERE course_id IS NULL OR course_id != :course_id");
+$studentsStmt = $db->prepare("
+    SELECT students.*, courses.course_name AS current_course
+    FROM students
+    LEFT JOIN courses ON students.course_id = courses.id
+    WHERE students.course_id IS NULL OR students.course_id != :course_id
+");
 $studentsStmt->execute(['course_id' => $courseId]);
-$students = $studentsStmt->fetchAll();
+$students = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$studentInfo = [];
+foreach ($students as $student) {
+    $studentInfo[$student['id']] = [
+        'current_course' => $student['current_course'] ?? 'None'
+    ];
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $studentId = $_POST['student_id'] ?? '';
@@ -39,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'student_id' => $studentId
         ]);
 
-        // Optional: Redirect or display success
         $_SESSION['message'] = [
             'type' => 'success',
             'text' => 'Student enrolled successfully.',
@@ -86,18 +97,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="max-w-screen-2xl mx-auto px-4 py-6 border-secondary">
         <form method="POST" action="enroll.php?course_id=<?= urlencode($courseId) ?>"
             class="max-w-lg bg-white p-4 mx-auto">
-            <h1 class="text-xl mb-4 font-bold text-center">Enroll a Student in <span
-                    class="text-primary"><?= htmlspecialchars($course['course_name']) ?></span></h1>
+            <h1 class="text-xl mb-4 font-bold text-center">
+                Enroll a Student in <span class="text-primary"><?= htmlspecialchars($course['course_name']) ?></span>
+            </h1>
             <?php if (!empty($errors)): ?>
                 <div class="mb-4 text-red-600">
                     <?= htmlspecialchars(implode(', ', $errors)) ?>
                 </div>
             <?php endif; ?>
+
             <div class="mb-4">
                 <label for="student_id" class="block text-sm font-medium mb-1">Select a Student</label>
                 <select name="student_id" id="student_id"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring focus:ring-accent focus:border-accent"
-                    required>
+                    required onchange="updateCurrentCourse()">
                     <option value="">-- Select a Student --</option>
                     <?php if ($students): ?>
                         <?php foreach ($students as $student): ?>
@@ -109,6 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
 
+            <div class="mb-4">
+                <label for="current_course" class="block text-sm font-medium mb-1">Current Course</label>
+                <input type="text" id="current_course"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-100" value="None"
+                    readonly />
+            </div>
+
             <div class="transition duration-300 flex items-center justify-end gap-x-4">
                 <a href="view_course.php?id=<?= urlencode($courseId) ?>"
                     class="bg-transparent cursor-pointer hover:underline focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-primary focus:border-primary rounded">Back</a>
@@ -118,6 +138,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+    <script>
+        // Student info mapping from PHP to JS
+        const studentInfo = <?= json_encode($studentInfo) ?>;
+        function updateCurrentCourse() {
+            const sel = document.getElementById('student_id');
+            const currentCourseBox = document.getElementById('current_course');
+            const selectedId = sel.value;
+            if (selectedId && studentInfo[selectedId]) {
+                currentCourseBox.value = studentInfo[selectedId].current_course || 'None';
+            } else {
+                currentCourseBox.value = 'None';
+            }
+        }
+    </script>
 </body>
 
 </html>

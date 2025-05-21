@@ -89,13 +89,17 @@ $courses = $stmt->fetchAll();
                         </div>
                     </div>
                     <div class="flex-1 p-6 flex flex-col">
-                        <h2 class="text-xl font-semibold text-gray-800 mb-2">
+                        <!-- Bold course name -->
+                        <h2 class="text-xl font-extrabold text-gray-800 mb-2">
                             <?= htmlspecialchars($course['course_name']) ?>
                         </h2>
                         <?php if (!empty($course['description'])): ?>
-                            <p class="text-gray-600 mb-4"><?= htmlspecialchars($course['description']) ?></p>
+                            <p class="text-gray-600 mb-3"><?= htmlspecialchars($course['description']) ?></p>
                         <?php endif; ?>
-                        <div class="mt-auto">
+                        <!-- Closer, gray, semi-transparent separator line -->
+                        <hr class="my-2 border-t border-gray-400 opacity-50">
+                        <!-- Add space between separator and button, center button -->
+                        <div class="mt-4 flex justify-center">
                             <a href="course.php?id=<?= urlencode($course['id']) ?>"
                                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white font-medium hover:bg-accent transition focus:outline-none focus:ring-2 focus:ring-accent">
                                 <i class="ti ti-eye"></i> View Course

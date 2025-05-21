@@ -51,7 +51,7 @@ $students = $stmt->fetchAll();
 
 <body class="bg-background min-h-screen font-manrope">
     <?php include base_path('public/partials/header.php'); ?>
-    <?php include base_path('public/courses.php'); ?>
+
     <div class="max-w-screen-2xl mx-auto px-4 py-6">
         <!-- <h1 class="text-3xl">Students</h1> -->
         <?php include base_path('public/partials/alert.php'); ?>

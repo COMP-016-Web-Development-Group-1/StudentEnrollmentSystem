@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($course_name) > 100) {
         $error = "Course name must not exceed 100 characters.";
     } else {
-        // Ensure new name is unique (excluding current course)
         $stmt = $db->prepare('SELECT COUNT(*) FROM courses WHERE course_name = :course_name AND id != :id');
         $stmt->execute(['course_name' => $course_name, 'id' => $courseId]);
         if ($stmt->fetchColumn() > 0) {

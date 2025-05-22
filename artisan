@@ -111,7 +111,12 @@ function seed($pdo)
         }
 
         // Seed course data
-        $courses = ['Mathematics', 'Computer Science', 'Physics'];
+        $courses = [
+            'Bachelor of Science in Information Technology (BSIT)',
+            'Bachelor of Science in Computer Science (BSCS)',
+            'Bachelor of Science in Computer Engineering (BSCoE)',
+            'Bachelor of Science in Information Science (BSIS)'
+        ];
         $stmt = $pdo->prepare("INSERT INTO courses (course_name) VALUES (?)");
         foreach ($courses as $course) {
             $stmt->execute([$course]);
@@ -126,13 +131,22 @@ function seed($pdo)
 
         // Seed student data
         $students = [
-            ['Alice', 'alice@example.com', $courseMap['Mathematics']],
-            ['Bob', 'bob@example.com', $courseMap['Computer Science']],
-            ['Charlie', 'charlie@example.com', $courseMap['Mathematics']],
-            ['Dana', 'dana@example.com', null], // no course assigned
-            ['Eve', 'eve@example.com', $courseMap['Physics']],
+            ['Abainza, Rendel', 'rendel.abainza@example.com', $courseMap['Bachelor of Science in Information Technology (BSIT)']],
+            ['De Dios, Wendel', 'wendel.dedios@example.com', $courseMap['Bachelor of Science in Computer Science (BSCS)']],
+            ['Gontinias, Caira', 'caira.gontinias@example.com', $courseMap['Bachelor of Science in Computer Engineering (BSCoE)']],
+            ['Montinola, Diane', 'diane.montinola@example.com', $courseMap['Bachelor of Science in Information Science (BSIS)']],
+            ['Viado, John Paul', 'johnpaul.viado@example.com', null],
+            ['Santos, Maria', 'maria.santos@example.com', $courseMap['Bachelor of Science in Computer Science (BSCS)']],
+            ['Lopez, Juan', 'juan.lopez@example.com', null],
+            ['Reyes, Ana', 'ana.reyes@example.com', $courseMap['Bachelor of Science in Information Science (BSIS)']],
+            ['Cruz, Miguel', 'miguel.cruz@example.com', $courseMap['Bachelor of Science in Information Technology (BSIT)']],
+            ['Garcia, Carla', 'carla.garcia@example.com', $courseMap['Bachelor of Science in Computer Science (BSCS)']],
+            ['Ramos, Liza', 'liza.ramos@example.com', $courseMap['Bachelor of Science in Information Technology (BSIT)']],
+            ['Fernandez, Paolo', 'paolo.fernandez@example.com', null], // no course assigned
+            ['Torres, Bea', 'bea.torres@example.com', $courseMap['Bachelor of Science in Computer Engineering (BSCoE)']],
+            ['Navarro, Kim', 'kim.navarro@example.com', null],
+            ['Morales, Daniel', 'daniel.morales@example.com', $courseMap['Bachelor of Science in Computer Science (BSCS)']],
         ];
-
         $stmt = $pdo->prepare("INSERT INTO students (name, email, course_id) VALUES (?, ?, ?)");
         foreach ($students as $student) {
             $stmt->execute($student);

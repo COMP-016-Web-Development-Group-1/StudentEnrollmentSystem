@@ -79,8 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>College Name - Add Student</title>
 </head>
 
-<body class="bg-background min-h-screen font-manrope">
+<body class="bg-background min-h-screen flex flex-col font-manrope">
     <?php include base_path('public/partials/header.php'); ?>
+
+    <main class="flex-grow">
     <div class="max-w-screen-2xl mx-auto px-4 py-6">
         <form method="post" class="max-w-lg bg-white p-4 mx-auto">
             <h1 class="text-xl mb-4 font-bold text-center">Update Student Information</h1>
@@ -112,11 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <?php if ($student['course_id']): ?>
-                <div class="flex items-center gap-2 mt-2">
-                    <input type="checkbox" name="remove_course" id="remove_course"
-                        class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
-                    <label for="remove_course" class="text-sm text-gray-700">Remove course assignment</label>
-                </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <input type="checkbox" name="remove_course" id="remove_course"
+                            class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                        <label for="remove_course" class="text-sm text-gray-700">Remove course assignment</label>
+                    </div>
             <?php endif; ?>
 
             <div class=" mt-5 transition duration-300 flex items-center justify-end gap-x-4">
@@ -128,6 +130,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
             </div>
         </form>
+    </main>
+    <?php include base_path('public/partials/footer.php'); ?>
+
 </body>
 
 </html>

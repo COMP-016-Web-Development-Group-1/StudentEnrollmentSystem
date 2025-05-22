@@ -5,12 +5,30 @@ require_once '../src/functions.php';
 require_once base_path('src/db.php');
 
 $db = createPdo();
+
+// Get and validate course id
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    die('Invalid course ID.');
+}
+
+$courseId = $_GET['id'];
+
+// Get course info
+$courseStmt = $db->prepare('SELECT * FROM courses WHERE id = ?');
+$courseStmt->execute([$courseId]);
+$course = $courseStmt->fetch();
+
+if (!$course) {
+    die('Course not found.');
+}
+
+// Get students enrolled in this course
 $stmt = $db->prepare('
-    SELECT students.*, courses.course_name
+    SELECT students.*
     FROM students
-    LEFT JOIN courses ON students.course_id = courses.id
+    WHERE students.course_id = ?
 ');
-$stmt->execute();
+$stmt->execute([$courseId]);
 $students = $stmt->fetchAll();
 
 ?>
@@ -46,26 +64,36 @@ $students = $stmt->fetchAll();
             --font-manrope: "Manrope", "sans-serif";
         }
     </style>
-    <title>College Name - Students</title>
+    <title>College Name - <?= htmlspecialchars($course['course_name']) ?></title>
 </head>
 
 <body class="bg-background min-h-screen font-manrope">
     <?php include base_path('public/partials/header.php'); ?>
 
     <div class="max-w-screen-2xl mx-auto px-4 py-6">
-        <!-- <h1 class="text-3xl">Students</h1> -->
         <?php include base_path('public/partials/alert.php'); ?>
 
         <div class="">
             <div class="flex justify-between items-end mb-4">
-                <h1 class="text-3xl">Student List</h1>
-                <a href="add_student.php"
-                    class="bg-primary text-white px-2 py-1 rounded hover:bg-secondary text-center transition">
-                    <i class="ti ti-plus"></i>
-                    Add Student
-                </a>
+                <div>
+                    <h1 class="text-3xl font-bold"><?= htmlspecialchars($course['course_name']) ?></h1>
+                    <p class="text-gray-500 text-sm">
+                        <?= count($students) ?> student<?= count($students) === 1 ? '' : 's' ?> enrolled
+                    </p>
+                </div>
+                <div class="flex gap-2">
+                    <a href="courses.php"
+                        class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500 text-center transition flex items-center gap-1">
+                        <i class="ti ti-arrow-left"></i>
+                        Back to Courses
+                    </a>
+                    <a href="enroll.php?course_id=<?= urlencode($courseId) ?>"
+                        class="bg-primary text-white px-2 py-1 rounded hover:bg-accent text-center transition flex items-center gap-1">
+                        <i class="ti ti-user-plus"></i>
+                        Enroll Student
+                    </a>
+                </div>
             </div>
-
             <div class="bg-white p-4 rounded shadow">
                 <table id="students-table" class="bg-white">
                     <thead>
@@ -90,12 +118,6 @@ $students = $stmt->fetchAll();
                             </th>
                             <th>
                                 <span class="flex items-center gap-x-1">
-                                    Course
-                                    <i class="ti ti-caret-up-down-filled"></i>
-                                </span>
-                            </th>
-                            <th>
-                                <span class="flex items-center gap-x-1">
                                     Actions
                                     <i class="ti ti-caret-up-down-filled"></i>
                                 </span>
@@ -108,33 +130,38 @@ $students = $stmt->fetchAll();
                                 <td><?= htmlspecialchars($student['id']) ?></td>
                                 <td><?= htmlspecialchars($student['name']) ?></td>
                                 <td><?= htmlspecialchars($student['email']) ?></td>
-                                <td><?= htmlspecialchars($student['course_name'] ?? "No Course") ?></td>
                                 <td class="flex items-center gap-x-2">
                                     <a class="bg-green-600 px-2 py-1 text-white rounded hover:bg-green-500 transition"
                                         href="update_student.php?id=<?= $student['id'] ?>">Update</a>
                                     <a href="#"
-                                        class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition open-delete-modal"
-                                        data-id="<?= $student['id'] ?>">Delete</a>
+                                        class="bg-red-600 px-2 py-1 text-white rounded hover:bg-red-500 transition open-unenroll-modal"
+                                        data-id="<?= $student['id'] ?>">Unenroll</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
+                        <?php if (empty($students)): ?>
+                            <tr>
+                                <td colspan="4" class="text-center text-gray-400 py-6">No students enrolled in this course.
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+    <!-- Unenroll Confirmation Modal -->
+    <div id="unenroll-confirmation-modal" tabindex="-1"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center"
         style="background-color: rgba(0, 0, 0, 0.5);">
         <div class="bg-white rounded-lg shadow p-6 w-full max-w-sm">
-            <h2 class="text-lg font-semibold mb-2">Confirm Deletion</h2>
-            <p class="mb-4 text-sm text-gray-600">Are you sure you want to delete this student?</p>
+            <h2 class="text-lg font-semibold mb-2">Confirm Unenroll</h2>
+            <p class="mb-4 text-sm text-gray-600">Are you sure you want to unenroll this student from the course?</p>
             <div class="flex justify-end gap-2">
-                <button id="cancelDeleteBtn"
+                <button id="cancelUnenrollBtn"
                     class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">Cancel</button>
-                <a href="#" id="confirmDeleteBtn"
-                    class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+                <a href="#" id="confirmUnenrollBtn"
+                    class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Unenroll</a>
             </div>
         </div>
     </div>
@@ -149,23 +176,23 @@ $students = $stmt->fetchAll();
             });
         }
 
-        const modal = document.getElementById('delete-confirmation-modal');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const deleteLinks = document.querySelectorAll('.open-delete-modal');
+        const modal = document.getElementById('unenroll-confirmation-modal');
+        const confirmUnenrollBtn = document.getElementById('confirmUnenrollBtn');
+        const cancelUnenrollBtn = document.getElementById('cancelUnenrollBtn');
+        const unenrollLinks = document.querySelectorAll('.open-unenroll-modal');
 
-        deleteLinks.forEach(link => {
+        unenrollLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
                 const studentId = this.getAttribute('data-id');
-                confirmDeleteBtn.href = `delete_student.php?id=${studentId}`;
+                confirmUnenrollBtn.href = `unenroll_student.php?id=${studentId}&course_id=<?= urlencode($courseId) ?>`;
                 modal.classList.remove('hidden');
             });
         });
 
-        cancelDeleteBtn.addEventListener('click', () => {
+        cancelUnenrollBtn.addEventListener('click', () => {
             modal.classList.add('hidden');
-            confirmDeleteBtn.href = '#';
+            confirmUnenrollBtn.href = '#';
         });
     </script>
 </body>

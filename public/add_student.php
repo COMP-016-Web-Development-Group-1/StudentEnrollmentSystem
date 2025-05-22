@@ -83,8 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>College Name - Add Student</title>
 </head>
 
-<body class="bg-background min-h-screen font-manrope">
+<body class="bg-background min-h-screen flex flex-col font-manrope">
     <?php include base_path('public/partials/header.php'); ?>
+    <main class="flex-grow">
     <div class="max-w-screen-2xl mx-auto px-4 py-6">
         <form method="POST" action="add_student.php" class="max-w-lg bg-white p-4 mx-auto">
             <h1 class="text-xl mb-4 font-bold text-center">Add Student</h1>
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring focus:ring-accent focus:border-accent"
                     value="<?= htmlspecialchars($name) ?>" required />
                 <?php if (isset($errors['name'])): ?>
-                    <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['name']) ?></p>
+                        <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['name']) ?></p>
                 <?php endif; ?>
             </div>
 
@@ -104,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring focus:ring-primary focus:border-primary"
                     value="<?= htmlspecialchars($email) ?>" required />
                 <?php if (isset($errors['email'])): ?>
-                    <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['email']) ?></p>
+                        <p class=" mt-1 text-sm text-red-500"><?= htmlspecialchars($errors['email']) ?></p>
                 <?php endif; ?>
             </div>
 
@@ -117,6 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Student</button>
             </div>
         </form>
+    </main>
+
+    <?php include base_path('public/partials/footer.php'); ?>
+
 </body>
 
 </html>

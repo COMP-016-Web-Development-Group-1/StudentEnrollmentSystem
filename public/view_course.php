@@ -151,8 +151,7 @@ $students = $stmt->fetchAll();
         </div>
     </div>
     <!-- Unenroll Confirmation Modal -->
-    <div id="unenroll-confirmation-modal" tabindex="-1"
-        class="hidden fixed inset-0 z-50 flex items-center justify-center"
+    <div id="unenroll-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 items-center justify-center"
         style="background-color: rgba(0, 0, 0, 0.5);">
         <div class="bg-white rounded-lg shadow p-6 w-full max-w-sm">
             <h2 class="text-lg font-semibold mb-2">Confirm Unenroll</h2>
@@ -184,6 +183,7 @@ $students = $stmt->fetchAll();
         unenrollLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
+                modal.classList.add('flex');
                 const studentId = this.getAttribute('data-id');
                 confirmUnenrollBtn.href = `unenroll_student.php?id=${studentId}&course_id=<?= urlencode($courseId) ?>`;
                 modal.classList.remove('hidden');

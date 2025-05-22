@@ -73,7 +73,7 @@ $courses = $stmt->fetchAll();
                                 aria-labelledby="dropdownMenuIconButton-<?= $course['id'] ?>">
                                 <li>
                                     <a href="update_course.php?id=<?= urlencode($course['id']) ?>"
-                                        class="block px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
+                                        class="px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="ti ti-edit"></i> Update Course
                                     </a>
                                 </li>
@@ -88,7 +88,7 @@ $courses = $stmt->fetchAll();
                         </div>
                     </div>
                     <div class="flex-1 p-6 flex flex-col">
-                        <h2 class="text-xl font-extrabold text-gray-800 mb-2">
+                        <h2 class="text-xl text-center font-extrabold text-gray-800 mb-2">
                             <?= htmlspecialchars($course['course_name']) ?>
                         </h2>
                         <?php if (!empty($course['description'])): ?>
@@ -108,7 +108,7 @@ $courses = $stmt->fetchAll();
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+    <div id="delete-confirmation-modal" tabindex="-1" class="hidden fixed inset-0 z-50 items-center justify-center"
         style="background-color: rgba(0, 0, 0, 0.5);">
         <div class="bg-white rounded-lg shadow p-6 w-full max-w-sm">
             <h2 class="text-lg font-semibold mb-2">Confirm Deletion</h2>
@@ -132,6 +132,7 @@ $courses = $stmt->fetchAll();
         deleteLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
+                modal.classList.add('flex');
                 const courseId = this.getAttribute('data-id');
                 confirmDeleteBtn.href = `delete_course.php?id=${courseId}`;
                 modal.classList.remove('hidden');
